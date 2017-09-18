@@ -4,6 +4,7 @@
 import os
 from sys import stderr
 from io import BytesIO
+from datetime import datetime
 import json
 
 import telebot
@@ -39,6 +40,7 @@ with open(templates_json_addr) as f:
 @bot.message_handler(commands = ['start'])
 def msghndlr_welcome(msg):
     chat_id = msg.chat.id
+    log(chat_id, "start")
     bot.send_message(chat_id, ui.get_message("welcome"))
     start(chat_id)
 
@@ -46,6 +48,7 @@ def msghndlr_welcome(msg):
 @bot.message_handler(regexp = ui.get_message("use_profile_photo_btn"))
 def msghndlr_use_profile_photo(msg):
     chat_id = msg.chat.id
+    log(chat_id, "use_profile_photo")
     try:
         send_photos(chat_id, bot.get_user_profile_photos(msg.from_user.id, offset = 0, limit = 1).photos[0])
     except IndexError:
@@ -56,6 +59,7 @@ def msghndlr_use_profile_photo(msg):
 @bot.message_handler(content_types = ["photo"])
 def msghndlr_use_uploaded_photo(msg):
     chat_id = msg.from_user.id
+    log(chat_id, "use_uploaded_photo")
     send_photos(chat_id, msg.photo)
 
 
@@ -67,6 +71,7 @@ def start(chat_id):
 
 def send_photos(chat_id, source_photos):
     for template in templates:
+        log(chat_id, "send_photo " + template["templat_addr"])
         send_photo(chat_id, source_photos, **template)
     start(chat_id)
 
@@ -102,8 +107,15 @@ def send_photo(chat_id, source_photos, source_photo_size, source_photo_position,
     photo_stream.close()
 
 
+def log(chat_id, txt):
+    print("%s\t%r\t%s" % (datetime.now(), chat_id, txt))
+
+
 def main():
-    bot.polling(none_stop = True)
+    try:
+        bot.polling(none_stop = True)
+    except Exception as ex:
+        log(None, ex)
 
 
 if __name__ == '__main__':
