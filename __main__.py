@@ -89,6 +89,8 @@ def send_photo(chat_id, source_photos, source_photo_size, source_photo_position,
         chosen_source_photo = source_photos[-1]
     
     source_stream = BytesIO(bot.download_file(bot.get_file(chosen_source_photo.file_id).file_path))
+    bot.send_chat_action(chat_id, "upload_photo")
+    
     source_photo = Image.open(source_stream)
     source_photo.load()
     source_stream.close()
@@ -105,7 +107,6 @@ def send_photo(chat_id, source_photos, source_photo_size, source_photo_position,
     photo_stream = BytesIO()
     photo.save(photo_stream, format = "png")
     photo_stream.seek(0)
-    bot.send_chat_action(chat_id, "upload_photo")
     bot.send_photo(chat_id, photo_stream)
     photo_stream.close()
 

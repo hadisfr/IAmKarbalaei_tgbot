@@ -1,6 +1,14 @@
-[{
-    "source_photo_size": [640, 640],
-    "source_photo_position": [43, 485],
-    "templat_addr": "prof.png",
-    "mask_addr": "mask.png"
-}]
+[
+    {
+        "source_photo_size": [640, 640],
+        "source_photo_position": [0, 0],
+        "templat_addr": "footer.png",
+        "mask_addr": "footer_mask.png"
+    },
+    {
+        "source_photo_size": [275, 275],
+        "source_photo_position": [31, 260],
+        "templat_addr": "full.png",
+        "mask_addr": "full_mask.png"
+    }
+]
