@@ -103,7 +103,7 @@ def send_photo(chat_id, source_photos, source_photo_size, source_photo_position,
 
 
 def main():
-    bot.polling()
+    bot.polling(none_stop = True)
 
 
 if __name__ == '__main__':
