@@ -6,8 +6,8 @@
         "mask_addr": "footer_mask.png"
     },
     {
-        "source_photo_size": [275, 275],
-        "source_photo_position": [31, 260],
+        "source_photo_size": [309, 309],
+        "source_photo_position": [36, 293],
         "templat_addr": "full.png",
         "mask_addr": "full_mask.png"
     }
