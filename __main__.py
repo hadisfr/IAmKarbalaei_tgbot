@@ -35,6 +35,9 @@ bot = telebot.TeleBot(TOKEN, num_threads = 3)
 ui = Ui(lang)
 with open(templates_json_addr) as f:
     templates = json.loads(f.read())
+for template in templates:
+    template["templat_addr"] = templates_addr_prefix + template["templat_addr"]
+    template["mask_addr"] = templates_addr_prefix + template["mask_addr"]
 
 
 @bot.message_handler(commands = ['start'])
