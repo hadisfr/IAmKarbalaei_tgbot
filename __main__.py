@@ -29,6 +29,8 @@ class Ui(object):
 
 bot = telebot.TeleBot(TOKEN, num_threads = 3)
 ui = Ui(lang)
+with open(templates_json_addr) as f:
+    templates = json.loads(f.read())
 
 
 @bot.message_handler(commands = ['start'])
@@ -42,7 +44,7 @@ def msghndlr_welcome(msg):
 def msghndlr_use_profile_photo(msg):
     chat_id = msg.chat.id
     try:
-        send_photo(chat_id, bot.get_user_profile_photos(msg.from_user.id, offset = 0, limit = 1).photos[0])
+        send_photos(chat_id, bot.get_user_profile_photos(msg.from_user.id, offset = 0, limit = 1).photos[0])
     except IndexError:
         bot.send_message(chat_id, "use_profile_photo_err", reply_markup = telebot.types.ReplyKeyboardRemove())
         start(chat_id)
@@ -51,7 +53,7 @@ def msghndlr_use_profile_photo(msg):
 @bot.message_handler(content_types = ["photo"])
 def msghndlr_use_uploaded_photo(msg):
     chat_id = msg.from_user.id
-    send_photo(chat_id, msg.photo)
+    send_photos(chat_id, msg.photo)
 
 
 def start(chat_id):
@@ -60,7 +62,13 @@ def start(chat_id):
     bot.send_message(chat_id, ui.get_message("give_photo"), reply_markup = keyboard_markup)
 
 
-def send_photo(chat_id, source_photos):
+def send_photos(chat_id, source_photos):
+    for template in templates:
+        send_photo(chat_id, source_photos, **template)
+    start(chat_id)
+
+
+def send_photo(chat_id, source_photos, source_photo_size, source_photo_position, templat_addr, mask_addr):
     chosen_source_photo = None
     for p in source_photos:
         if(p.width >= source_photo_size[0] and p.height >= source_photo_size[1]):
@@ -89,8 +97,6 @@ def send_photo(chat_id, source_photos):
     bot.send_chat_action(chat_id, "upload_photo")
     bot.send_photo(chat_id, photo_stream)
     photo_stream.close()
-
-    start(chat_id)
 
 
 def main():
