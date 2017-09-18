@@ -17,14 +17,17 @@ class Ui(object):
 
     def __init__(self, lang = "fa"):
         super(Ui, self).__init__()
-        self.lang = lang
         with open(ui_json_addr) as f:
             self.db = json.loads(f.read())
-        if(self.lang not in self.db.keys()):
-            raise ValueError("%s language not found in %s." % (lang, ui_json_addr))
+        self.set_lang(lang)
 
     def get_message(self, key):
         return self.db[self.lang][key]
+
+    def set_lang(self, lang):
+        if(lang not in self.db.keys()):
+            raise ValueError("%s language not found in %s." % (lang, ui_json_addr))
+        self.lang = lang
 
 
 bot = telebot.TeleBot(TOKEN, num_threads = 3)
