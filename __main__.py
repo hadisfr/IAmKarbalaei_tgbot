@@ -2,7 +2,7 @@
 
 
 import os
-from sys import stderr
+from sys import stderr, stdout
 from io import BytesIO
 from datetime import datetime
 import json
@@ -113,6 +113,7 @@ def send_photo(chat_id, source_photos, source_photo_size, source_photo_position,
 
 def log(chat_id, txt):
     print("%s\t%r\t%s" % (datetime.now(), chat_id, txt))
+    stdout.flush()
 
 
 def main():
