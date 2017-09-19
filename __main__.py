@@ -16,7 +16,7 @@ from config import *
 class Ui(object):
     """user interface message provider"""
 
-    def __init__(self, lang = "fa"):
+    def __init__(self, lang="fa"):
         super(Ui, self).__init__()
         with open(ui_json_addr) as f:
             self.db = json.loads(f.read())
@@ -31,7 +31,7 @@ class Ui(object):
         self.lang = lang
 
 
-bot = telebot.TeleBot(TOKEN, num_threads = 3)
+bot = telebot.TeleBot(TOKEN, num_threads=3)
 ui = Ui(lang)
 with open(templates_json_addr) as f:
     templates = json.loads(f.read())
@@ -40,7 +40,7 @@ for template in templates:
     template["mask_addr"] = templates_addr_prefix + template["mask_addr"]
 
 
-@bot.message_handler(commands = ['start'])
+@bot.message_handler(commands=['start'])
 def msghndlr_welcome(msg):
     chat_id = msg.chat.id
     log(chat_id, "start")
@@ -48,18 +48,18 @@ def msghndlr_welcome(msg):
     start(chat_id)
 
 
-@bot.message_handler(regexp = ui.get_message("use_profile_photo_btn"))
+@bot.message_handler(regexp=ui.get_message("use_profile_photo_btn"))
 def msghndlr_use_profile_photo(msg):
     chat_id = msg.chat.id
     log(chat_id, "use_profile_photo")
     try:
-        send_photos(chat_id, bot.get_user_profile_photos(msg.from_user.id, offset = 0, limit = 1).photos[0])
+        send_photos(chat_id, bot.get_user_profile_photos(msg.from_user.id, offset=0, limit=1).photos[0])
     except IndexError:
-        bot.send_message(chat_id, "use_profile_photo_err", reply_markup = telebot.types.ReplyKeyboardRemove())
+        bot.send_message(chat_id, "use_profile_photo_err", reply_markup=telebot.types.ReplyKeyboardRemove())
         start(chat_id)
 
 
-@bot.message_handler(content_types = ["photo"])
+@bot.message_handler(content_types=["photo"])
 def msghndlr_use_uploaded_photo(msg):
     chat_id = msg.from_user.id
     log(chat_id, "use_uploaded_photo")
@@ -67,9 +67,9 @@ def msghndlr_use_uploaded_photo(msg):
 
 
 def start(chat_id):
-    keyboard_markup = telebot.types.ReplyKeyboardMarkup(one_time_keyboard = True, resize_keyboard = True)
+    keyboard_markup = telebot.types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
     keyboard_markup.add(telebot.types.KeyboardButton(ui.get_message("use_profile_photo_btn")))
-    bot.send_message(chat_id, ui.get_message("give_photo"), reply_markup = keyboard_markup)
+    bot.send_message(chat_id, ui.get_message("give_photo"), reply_markup=keyboard_markup)
 
 
 def send_photos(chat_id, source_photos):
@@ -87,7 +87,7 @@ def send_photo(chat_id, source_photos, source_photo_size, source_photo_position,
             break
     if not chosen_source_photo:
         chosen_source_photo = source_photos[-1]
-    
+
     source_stream = BytesIO(bot.download_file(bot.get_file(chosen_source_photo.file_id).file_path))
     bot.send_chat_action(chat_id, "upload_photo")
 
@@ -105,7 +105,7 @@ def send_photo(chat_id, source_photos, source_photo_size, source_photo_position,
     photo.paste(source_photo.resize(source_photo_size), source_photo_position, mask)
 
     photo_stream = BytesIO()
-    photo.save(photo_stream, format = "png")
+    photo.save(photo_stream, format="png")
     photo_stream.seek(0)
     bot.send_photo(chat_id, photo_stream)
     photo_stream.close()
@@ -118,7 +118,7 @@ def log(chat_id, txt):
 
 def main():
     try:
-        bot.polling(none_stop = True)
+        bot.polling(none_stop=True)
     except Exception as ex:
         log(None, ex)
 
