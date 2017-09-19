@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 
-import os
 from sys import stderr, stdout
 from io import BytesIO
 from datetime import datetime
@@ -121,6 +120,7 @@ def main():
         bot.polling(none_stop=True)
     except Exception as ex:
         log(None, ex)
+        print(ex, file=stderr)
 
 
 def truewhile_main():
