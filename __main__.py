@@ -20,6 +20,7 @@ class Ui(object):
         with open(ui_json_addr) as f:
             self.db = json.loads(f.read())
         self.set_lang(lang)
+        super().__init__()
 
     def get_message(self, key):
         return self.db[self.lang][key]
