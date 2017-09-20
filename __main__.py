@@ -145,7 +145,7 @@ def print_log(chat_id, txt, file):
 def log(chat_id, txt):
     print_log(chat_id, txt, stdout)
     try:
-        with open(log_addr) as f:
+        with open(log_addr, "a") as f:
             print_log(chat_id, txt, f)
     except Exception as ex:
         print_log(None, ex, stdout)
