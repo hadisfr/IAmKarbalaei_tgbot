@@ -12,7 +12,7 @@ from PIL import Image
 from config import *
 
 
-class Ui(object):
+class Ui:
     """user interface message provider"""
 
     def __init__(self, lang="fa"):
@@ -20,7 +20,6 @@ class Ui(object):
         with open(ui_json_addr) as f:
             self.db = json.loads(f.read())
         self.set_lang(lang)
-        super().__init__()
 
     def get_message(self, key):
         return self.db[self.lang][key]
