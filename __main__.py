@@ -5,11 +5,13 @@ from sys import stderr, stdout
 from io import BytesIO
 from datetime import datetime
 import json
+import os
 
 import telebot
 from PIL import Image
 
 from config import *
+import log_analyzer
 
 
 class Ui:
@@ -63,6 +65,26 @@ def msghndlr_use_uploaded_photo(msg):
     chat_id = msg.chat.id
     log(chat_id, "use_uploaded_photo")
     send_photos(chat_id, msg.photo)
+
+
+@bot.message_handler(commands=["statistics"])
+def msghndlr_statistics(msg):
+    chat_id = msg.chat.id
+    log(chat_id, "statistics")
+    username = msg.from_user.username
+    if username in admin_usernames:
+        try:
+            log_analyzer.main(plot=True, pretty_print=False)
+            with open(log_analyze_addr, "rb") as f:
+                bot.send_chat_action(chat_id, "upload_photo")
+                bot.send_photo(chat_id, f)
+        except Exception as ex:
+            log(None, ex)
+            print(ex, file=stderr)
+            bot.send_message(chat_id, "err500")
+    else:
+        bot.send_message(chat_id, "err403")
+    start(chat_id)
 
 
 @bot.message_handler()
