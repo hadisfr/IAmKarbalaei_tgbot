@@ -6,6 +6,8 @@ import json
 from datetime import datetime
 from collections import OrderedDict
 
+import matplotlib
+matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 
 from config import *
