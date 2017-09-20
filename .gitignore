@@ -3,5 +3,5 @@
 __pycache__
 .DS_Store
 pics
-log.txt
+log.*
 *.sublime-workspace
