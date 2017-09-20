@@ -60,9 +60,16 @@ def msghndlr_use_profile_photo(msg):
 
 @bot.message_handler(content_types=["photo"])
 def msghndlr_use_uploaded_photo(msg):
-    chat_id = msg.from_user.id
+    chat_id = msg.chat.id
     log(chat_id, "use_uploaded_photo")
     send_photos(chat_id, msg.photo)
+
+
+@bot.message_handler()
+def msghndlr_wrong_cmd(msg):
+    chat_id = msg.chat.id
+    bot.send_message(chat_id, ui.get_message("wrong_cmd"))
+    start(chat_id)
 
 
 def start(chat_id):
