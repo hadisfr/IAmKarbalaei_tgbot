@@ -5,7 +5,6 @@ from sys import stderr, stdout
 from io import BytesIO
 from datetime import datetime
 import json
-import os
 
 import telebot
 from PIL import Image
@@ -139,9 +138,17 @@ def send_photo(chat_id, source_photos, source_photo_size, source_photo_position,
     photo_stream.close()
 
 
+def print_log(chat_id, txt, file):
+    print("%s\t%r\t%s" % (datetime.now(), chat_id, txt), flush=True, file=file)
+
+
 def log(chat_id, txt):
-    print("%s\t%r\t%s" % (datetime.now(), chat_id, txt))
-    stdout.flush()
+    print_log(chat_id, txt, stdout)
+    try:
+        with open(log_addr) as f:
+            print_log(chat_id, txt, f)
+    except Exception as ex:
+        print_log(None, ex, stdout)
 
 
 def main():
