@@ -79,10 +79,9 @@ def msghndlr_statistics(msg):
                 bot.send_photo(chat_id, f)
         except Exception as ex:
             log(None, ex)
-            print(ex, file=stderr)
-            bot.send_message(chat_id, "err500")
+            bot.send_message(chat_id, ui.get_message("err500"))
     else:
-        bot.send_message(chat_id, "err403")
+        bot.send_message(chat_id, ui.get_message("err403"))
     start(chat_id)
 
 
@@ -143,12 +142,12 @@ def print_log(chat_id, txt, file):
 
 
 def log(chat_id, txt):
-    print_log(chat_id, txt, stdout)
+    print_log(chat_id, txt, [stderr, stdout][bool(chat_id)])
     try:
         with open(log_addr, "a") as f:
             print_log(chat_id, txt, f)
     except Exception as ex:
-        print_log(None, ex, stdout)
+        print_log(None, ex, stderr)
 
 
 def main():
@@ -156,7 +155,6 @@ def main():
         bot.polling(none_stop=True)
     except Exception as ex:
         log(None, ex)
-        print(ex, file=stderr)
 
 
 def truewhile_main():
