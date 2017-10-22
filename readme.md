@@ -1,4 +1,4 @@
-![revolunet logo](IAmKarbalaei.small.jpg "rl")
+![logo](IAmKarbalaei.small.jpg "rl")
 
 # IAmKarbalaei Telegram Bot
 
