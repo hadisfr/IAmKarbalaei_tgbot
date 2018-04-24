@@ -74,7 +74,7 @@ def msghndlr_statistics(msg):
     if username in admin_usernames:
         try:
             log_analyzer.main(plot=True, pretty_print=False)
-            with open(log_analyze_addr, "rb", encoding='utf-8') as f:
+            with open(log_analyze_addr, "rb") as f:
                 bot.send_chat_action(chat_id, "upload_photo")
                 bot.send_photo(chat_id, f)
         except Exception as ex:
