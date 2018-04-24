@@ -18,7 +18,7 @@ class Ui:
 
     def __init__(self, lang="fa"):
         super(Ui, self).__init__()
-        with open(ui_json_addr) as f:
+        with open(ui_json_addr, encoding='utf-8') as f:
             self.db = json.loads(f.read())
         self.set_lang(lang)
 
@@ -33,7 +33,7 @@ class Ui:
 
 bot = telebot.TeleBot(TOKEN, num_threads=3)
 ui = Ui(lang)
-with open(templates_json_addr) as f:
+with open(templates_json_addr, encoding='utf-8') as f:
     templates = json.loads(f.read())
 for template in templates:
     template["templat_addr"] = templates_addr_prefix + template["templat_addr"]
@@ -74,7 +74,7 @@ def msghndlr_statistics(msg):
     if username in admin_usernames:
         try:
             log_analyzer.main(plot=True, pretty_print=False)
-            with open(log_analyze_addr, "rb") as f:
+            with open(log_analyze_addr, "rb", encoding='utf-8') as f:
                 bot.send_chat_action(chat_id, "upload_photo")
                 bot.send_photo(chat_id, f)
         except Exception as ex:
@@ -144,7 +144,7 @@ def print_log(chat_id, txt, file):
 def log(chat_id, txt):
     print_log(chat_id, txt, [stderr, stdout][bool(chat_id)])
     try:
-        with open(log_addr, "a") as f:
+        with open(log_addr, "a", encoding='utf-8') as f:
             print_log(chat_id, txt, f)
     except Exception as ex:
         print_log(None, ex, stderr)
